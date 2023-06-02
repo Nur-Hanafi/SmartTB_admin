@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "180953665643",
+    "firebase_url": "https://bank-sampah-mentari-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "bank-sampah-mentari",
+    "storage_bucket": "bank-sampah-mentari.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:180953665643:android:01eb1c37fc4b1eaee2212e",
+        "android_client_info": {
+          "package_name": "com.hans.smartTB"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "180953665643-3osq85utb40lci94f67f2qjukl149lpd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjWtAmbpMI8Byg_V0M2pclG9YYxzkGSBM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "180953665643-3osq85utb40lci94f67f2qjukl149lpd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:180953665643:android:6ffe3415e4834e99e2212e",
+        "android_client_info": {
+          "package_name": "com.hans.smartTB_admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "180953665643-3osq85utb40lci94f67f2qjukl149lpd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjWtAmbpMI8Byg_V0M2pclG9YYxzkGSBM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "180953665643-3osq85utb40lci94f67f2qjukl149lpd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
