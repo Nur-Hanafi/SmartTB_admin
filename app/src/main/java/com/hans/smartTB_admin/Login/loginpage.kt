@@ -66,7 +66,7 @@ class loginpage : AppCompatActivity() {
                 if (it.isSuccessful) {
                     val usermail = auth.currentUser?.email!!.lowercase()
                     val db = FirebaseFirestore.getInstance()
-                    val cekDoc = db.collection("users").document(usermail!!)
+                    val cekDoc = db.collection("admin").document(usermail!!)
                     cekDoc.get().addOnSuccessListener {
 
                         //mencocokkan sesi login dengan data user di firestore

@@ -124,7 +124,7 @@ class Register : AppCompatActivity() {
                         "foto" to foto,
                     )
                     val email = auth.currentUser?.email!!.lowercase()
-                    firestore.collection("users").document(email!!)
+                    firestore.collection("admin").document(email!!)
                         .set(user)
                         .addOnSuccessListener { documentReference ->
                             Toast.makeText(this, "Register Berhasil", Toast.LENGTH_LONG).show()
