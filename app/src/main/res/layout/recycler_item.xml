@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="220dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="5dp"
+        app:cardUseCompatPadding="true"
+        app:cardBackgroundColor="@color/white"
+        app:strokeColor="@color/colorPrimary"
+        app:strokeWidth="2dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvNode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Node:"
+                android:textSize="14sp"
+                android:textColor="@color/colorPrimary"
+                android:layout_margin="10dp"
+                android:textStyle="bold"/>
+
+            <ImageView
+                android:id="@+id/iv_baterai"
+                android:layout_width="80dp"
+                android:layout_height="150dp"
+                android:layout_alignParentEnd="false"
+                android:layout_centerInParent="true"
+                android:layout_toLeftOf="@id/pb_kapasitas"
+                android:src="@drawable/baseline_battery_0_bar_24" />
+
+            <TextView
+                android:id="@+id/tv_bateraibar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="80dp"
+                android:text="0%"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12sp"
+                android:layout_alignRight="@id/iv_baterai"
+                android:layout_alignLeft="@id/iv_baterai"
+                android:layout_alignTop="@id/iv_baterai"
+                android:layout_alignBottom="@id/iv_baterai"
+                android:layout_centerVertical="false"
+                android:gravity="center" />
+
+            <ProgressBar
+                android:id="@+id/pb_kapasitas"
+                style="@style/CircularDeterminateProgresBar"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
+                android:progress="0" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_progress"
+                android:text="0%"
+                android:textSize="14sp"
+                android:layout_alignRight="@id/pb_kapasitas"
+                android:layout_alignLeft="@id/pb_kapasitas"
+                android:layout_alignTop="@id/pb_kapasitas"
+                android:layout_alignBottom="@id/pb_kapasitas"
+                android:layout_centerVertical="true"
+                android:gravity="center" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pb_kapasitas"
+                android:layout_alignLeft="@id/pb_kapasitas"
+                android:layout_alignRight="@id/pb_kapasitas"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="15dp"
+                android:text="KAPASITAS"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12sp"
+                />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

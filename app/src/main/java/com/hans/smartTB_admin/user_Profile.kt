@@ -32,7 +32,7 @@ class user_Profile : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         val email = auth.currentUser?.email
 
-        val Fstore = db.collection("users").document(email!!)
+        val Fstore = db.collection("admin").document(email!!)
         Fstore.get().addOnSuccessListener {
             binding.namaUser.text = name
             binding.emailUser.text = emailuser

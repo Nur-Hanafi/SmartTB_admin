@@ -274,7 +274,7 @@ class updateProfile : AppCompatActivity() {
                         )
                         val auth = FirebaseAuth.getInstance()
                         val email = auth.currentUser?.email
-                        dbupdate.collection("users").document(email!!).update(bahanProfile)
+                        dbupdate.collection("admin").document(email!!).update(bahanProfile)
                             .addOnSuccessListener { documentReference ->
                                 Toast.makeText(this, "Berhasil Memperbarui Profil", Toast.LENGTH_SHORT).show()
                                 val intent = Intent(this, MainActivity::class.java)

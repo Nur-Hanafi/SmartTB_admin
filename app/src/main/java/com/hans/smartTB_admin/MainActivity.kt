@@ -1,10 +1,12 @@
 package com.hans.smartTB_admin
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.ShapeDrawable
@@ -12,41 +14,68 @@ import android.graphics.drawable.shapes.RoundRectShape
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.util.Log
+import android.util.TypedValue
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
+import com.hans.smartTB_admin.Adapter.RecyclerNodeAdapter
 import com.hans.smartTB_admin.Fragment.riwayat
 import com.hans.smartTB_admin.Login.loginpage
 import com.hans.smartTB_admin.databinding.ActivityMainBinding
 
 
-lateinit var binding : ActivityMainBinding
-lateinit var auth: FirebaseAuth
-private lateinit var foto : String
-lateinit var database: FirebaseDatabase
-
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding : ActivityMainBinding
+    lateinit var auth: FirebaseAuth
+    private lateinit var foto : String
+    private lateinit var database: FirebaseDatabase
+    private lateinit var adapter: RecyclerNodeAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // Langkah 1: Menghubungkan aplikasi Android ke Realtime Database Firebase
         database = FirebaseDatabase.getInstance()
         auth = FirebaseAuth.getInstance()
 
-        fetchData()
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-
         setContentView(binding.root)
 
+        // Membuat adapter untuk Recyclerview
+        adapter = RecyclerNodeAdapter()
+
+        // Mengatur adapter ke GridView
+        binding.recyclerNode.adapter = adapter
+
+        //mengatur layout manager recyclerview menjadi 2 kolom
+        val layoutManager= GridLayoutManager(this, 2)
+        binding.recyclerNode.layoutManager = layoutManager
+
+        val itemDecoration = object : RecyclerView.ItemDecoration() {
+            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+                val position = parent.getChildAdapterPosition(view)
+                val column = position % 2
+                if (column == 0) {
+                    outRect.right = 10.dpToPx(parent.context)
+                } else {
+                    outRect.left = 10.dpToPx(parent.context)
+                }
+            }
+        }
+        binding.recyclerNode.addItemDecoration(itemDecoration)
+
+        //mengambil data dari dB
+        fetchData()
         //navbar
         binding.bottomNavigationView.setOnItemSelectedListener {
             when(it.itemId){
@@ -86,6 +115,53 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+    }
+
+    private fun fetchData() {
+        val email = auth.currentUser?.email!!.lowercase()
+        val reference = database.getReference("Node")
+
+        val Fstore = FirebaseFirestore.getInstance().collection("admin").document(email)
+        Fstore.get().addOnSuccessListener{
+            if (it != null) {
+                val name = it.getString("name")
+                foto = it.getString("foto").toString()
+
+                binding.tvUsername.text = name
+                binding.emailuser.text = "Email : $email"
+
+                Glide.with(this)
+                    .load(foto)
+                    .into(binding.imageProfile)
+            }else{
+                Toast.makeText(this, "Error", Toast.LENGTH_LONG).show()
+            }
+        }
+
+        reference.addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
+                val id = dataSnapshot.key
+                val jarak = dataSnapshot.child("jarak").getValue(String::class.java)
+                val batt = dataSnapshot.child("jarak").getValue(String::class.java)
+                adapter.add("$id, $jarak, $batt")
+            }
+
+            override fun onChildChanged(dataSnapshot: DataSnapshot, previousChildName: String?) {
+                // Handle changes to data
+            }
+
+            override fun onChildRemoved(dataSnapshot: DataSnapshot) {
+                // Handle removal of data
+            }
+
+            override fun onChildMoved(dataSnapshot: DataSnapshot, previousChildName: String?) {
+                // Handle movement of data
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle errors
+            }
+        })
     }
 
     private fun hidefragment(fragment: Fragment) {
@@ -187,82 +263,8 @@ class MainActivity : AppCompatActivity() {
         fragmentTransaction.commit()
     }
 
-    private fun fetchData() {
-        val email = auth.currentUser?.email!!.lowercase()
-        val reference = database.getReference("Node")
-
-        var Fstore = FirebaseFirestore.getInstance().collection("users").document(email!!)
-        Fstore.get().addOnSuccessListener{
-         if (it != null) {
-             val name = it.getString("name")
-             foto = it.getString("foto").toString()
-
-             binding.tvUsername.text = name
-             binding.emailuser.text = "Email : $email"
-
-             Glide.with(this)
-                 .load(foto)
-                 .into(binding.imageProfile)
-         }else{
-             Toast.makeText(this, "Error", Toast.LENGTH_LONG).show()
-         }
-        }
-
-        reference.orderByChild("Email").equalTo(email).addValueEventListener(object : ValueEventListener{
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (snapshot in dataSnapshot.children)
-                {
-                    val node = snapshot.key
-                    binding.tvNodeID.text = "Node ID : $node"
-
-                    //cek kapasitas tempat sampah
-                    val jarak = snapshot.child("jarak").getValue(String::class.java)?.toFloat()
-                    val Maxsampah = 100
-                    if (jarak != null && jarak <= Maxsampah)
-                    {
-                        val persentase = (Maxsampah - jarak!!).toInt()
-                        binding.pbKapasitas.progress = persentase
-                        binding.tvProgress.text = "$persentase%"
-                        binding.tvKapasitas.text = "Kapasitas Terpakai : $persentase%"
-                    }
-
-                    //update GPS
-                    val latt = snapshot.child("Lattitude").getValue(String::class.java)
-                    val long = snapshot.child("Longitude").getValue(String::class.java)
-                    if (latt != null && long != null){
-                        binding.tvLattitude.text = "lattitude : $latt"
-                        binding.tvLongitude.text = "longitude : $long"
-                    }
-
-                    //cek kapasitas baterai
-                    val baterai = snapshot.child("Baterai").getValue(String::class.java)?.toFloat()
-                    val persen = ((baterai!! - 3) / 1.2) * 100
-                    binding.tvBaterai.text = "Baterai : ${persen?.toInt()}%"
-                    binding.tvBateraibar.text = "${persen?.toInt()}%"
-                    updateIconBaterai(persen.toFloat())
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.e("Firebase", "Error reading data from Realtime Database: " + databaseError.message)            }
-
-        })
     }
 
-    private fun updateIconBaterai(baterai: Float?) {
-        if (baterai != null) {
-            when
-            {
-                baterai <= 7 -> binding.ivBaterai.setImageResource(R.drawable.baseline_battery_0_bar_24)
-                baterai <= 20 -> binding.ivBaterai.setImageResource(R.drawable.baseline_battery_1_bar_24)
-                baterai <= 35 -> binding.ivBaterai.setImageResource(R.drawable.baseline_battery_2_bar_24)
-                baterai <= 50 -> binding.ivBaterai.setImageResource(R.drawable.baseline_battery_3_bar_24)
-                baterai <= 60 -> binding.ivBaterai.setImageResource(R.drawable.baseline_battery_4_bar_24)
-                baterai <= 75 -> binding.ivBaterai.setImageResource(R.drawable.baseline_battery_5_bar_24)
-                baterai <= 87 -> binding.ivBaterai.setImageResource(R.drawable.baseline_battery_6_bar_24)
-                baterai > 87 -> binding.ivBaterai.setImageResource(R.drawable.baseline_battery_full_24)
-            }
-        }
-    }
-
+fun Int.dpToPx(context: Context): Int {
+    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, this.toFloat(), context.resources.displayMetrics).toInt()
 }
