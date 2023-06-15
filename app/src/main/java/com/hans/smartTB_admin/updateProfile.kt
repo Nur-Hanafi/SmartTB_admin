@@ -118,7 +118,7 @@ class updateProfile : AppCompatActivity() {
                         photoFile?.also {
                             val photoURI: Uri = FileProvider.getUriForFile(
                                 this,
-                                "com.hans.smartTB.fileprovider",
+                                "com.hans.smartTB_admin.fileprovider",
                                 it
                             )
                             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)

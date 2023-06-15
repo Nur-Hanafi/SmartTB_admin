@@ -34,15 +34,13 @@ class riwayat : Fragment() {
     }
 
     private fun riwayatPesanan() {
-        val usermail = FirebaseAuth.getInstance().currentUser?.email
-        val listPesananRiwayat = FirebaseFirestore.getInstance().collection("users").document(usermail.toString()).collection("riwayat")
+        val listPesananRiwayat = FirebaseFirestore.getInstance().collection("riwayat")
         listPesananRiwayat.get()
             .addOnSuccessListener { documents ->
                 for (document in documents)
                 {
                     val riwayat = documents.toObjects(dataRiwayat::class.java)
                     binding.recyclerViewRiwayat.adapter = context?.let { RiwayatAdapter(it, riwayat) }
-
                 }
 
             }

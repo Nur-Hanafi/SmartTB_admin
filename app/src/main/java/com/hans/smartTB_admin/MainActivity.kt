@@ -43,13 +43,21 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: RecyclerNodeAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Langkah 1: Menghubungkan aplikasi Android ke Realtime Database Firebase
+        // Langkah 1: Menghubungkan aplikasi Android ke Database Firebase
         database = FirebaseDatabase.getInstance()
         auth = FirebaseAuth.getInstance()
 
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //cek intent
+        val bundle = intent.extras
+        if(bundle != null) {
+            if (bundle?.getString("direct") == "true") {
+                replaceFragment(riwayat())
+            }
+        }
 
         // Membuat adapter untuk Recyclerview
         adapter = RecyclerNodeAdapter()
@@ -109,9 +117,15 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val kategori = findViewById<CardView>(R.id.cvKategori)
-        kategori.setOnClickListener{
-            val intent = Intent(this@MainActivity, jenisSampah::class.java)
+        val jemput = findViewById<CardView>(R.id.cvJemputSampah)
+        jemput.setOnClickListener{
+            val intent = Intent(this@MainActivity, jemputSampah::class.java)
+            startActivity(intent)
+        }
+
+        val inputData = findViewById<CardView>(R.id.cvInputData)
+        inputData.setOnClickListener{
+            val intent = Intent(this@MainActivity, inputDataPenimbangan::class.java)
             startActivity(intent)
         }
 

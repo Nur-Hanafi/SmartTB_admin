@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".hargaSampah"
-    android:background="@color/white"
-    android:fitsSystemWindows="true">
+    tools:context=".inputDataPenimbangan">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -28,7 +26,7 @@
                 android:textAllCaps="true"
                 android:layout_marginEnd="20dp"
                 android:layout_gravity="center"
-                android:text="Harga Sampah"
+                android:text="Input Data Penimbangan"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -51,55 +49,156 @@
             android:layout_marginEnd="10dp"
             android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_margin="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:padding="10dp"
-            android:background="@drawable/bg_rounded_all"
-            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_margin="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:padding="10dp"
+                android:background="@drawable/bg_rounded_all"
+                android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="0dp"
-                android:src="@drawable/baseline_info_24" />
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="0dp"
+                    android:src="@drawable/baseline_info_24" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="Demi menghindari kesalahan input, tabel input hanya akan muncul jika email nasabah terdaftar pada sistem"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:text="Harga setiap jenis sampah dapat berubah sewaktu - waktu tanpa pemberitahuan sesuai kondisi pasar"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:text="Email Nasabah: "
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"/>
 
-        </LinearLayout>
+            <SearchView
+                android:id="@+id/searchView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:queryHint="Masukkan alamat email nasabah"
+                android:background="@drawable/bg_searchbar"
+                android:layoutDirection="rtl"
+                android:inputType="textEmailAddress"
+                android:searchIcon="@drawable/baseline_search_24"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:textColor="@color/colorPrimary"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/colorPrimary"/>
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/tanggalUpdate"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Harga Terbaru Per: "
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"/>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 app:cardCornerRadius="10dp"
-                app:cardElevation="10dp">
+                app:cardElevation="10dp"
+                android:visibility="gone"
+                android:id="@+id/tabelInput"
+                >
 
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
-                    android:backgroundTint="#FAFFF6">
+                    android:backgroundTint="#FAFFF6"
+                    >
 
+                    <TableRow
+                        android:background="@drawable/bg_rounded_all"
+                        android:layout_marginBottom="5dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:text="Email"
+                            android:textColor="@android:color/white"
+                            android:padding="10sp"
+                            android:textSize="14sp"
+                            android:layout_weight="1"
+                            android:textStyle="bold"
+                            android:gravity="center"
+                            />
+
+                        <TextView
+                            android:id="@+id/emailNasabah"
+                            android:scrollHorizontally="true"
+                            android:background="@drawable/bg_searchbar"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:text="email"
+                            android:textColor="@color/colorPrimary"
+                            android:padding="10sp"
+                            android:textSize="14sp"
+                            android:layout_weight="2"
+                            android:textStyle="bold"
+                            android:gravity="center_horizontal"
+                            />
+
+                    </TableRow>
+                    <TableRow
+                        android:background="@drawable/bg_rounded_all"
+                        android:layout_marginBottom="10dp">
+
+                        <TextView
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:text="Nama"
+                            android:textColor="@android:color/white"
+                            android:padding="10sp"
+                            android:textSize="14sp"
+                            android:layout_weight="1"
+                            android:textStyle="bold"
+                            android:gravity="center"
+                            />
+
+                        <TextView
+                            android:id="@+id/namaNasabah"
+                            android:scrollHorizontally="true"
+                            android:background="@drawable/bg_searchbar"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:text="Nama Nasabah"
+                            android:textColor="@color/colorPrimary"
+                            android:padding="10sp"
+                            android:textSize="14sp"
+                            android:layout_weight="2"
+                            android:textStyle="bold"
+                            android:gravity="center_horizontal"
+                            />
+
+                    </TableRow>
+
+                    <!-- Table Data -->
                     <TableRow
                         android:background="@drawable/bg_rounded_top">
 
@@ -129,7 +228,7 @@
                         <TextView
                             android:layout_width="50dp"
                             android:layout_height="wrap_content"
-                            android:text="Harga \n(Rp)"
+                            android:text="Harga /Kg \n(Rp)"
                             android:textColor="@android:color/white"
                             android:padding="10sp"
                             android:textSize="14sp"
@@ -138,8 +237,6 @@
                             android:gravity="center_horizontal"
                             />
                     </TableRow>
-
-                    <!-- Table Data -->
 
                     <TableRow>
                         <TextView
@@ -154,14 +251,17 @@
                             android:drawableEnd="@drawable/table_border"
                             />
 
-                        <TextView
+                        <EditText
+                            android:id="@+id/et_jumlahKardus"
                             android:layout_width="50dp"
                             android:layout_height="wrap_content"
-                            android:text="1"
+                            android:text=""
                             android:padding="10sp"
                             android:textSize="12sp"
                             android:layout_weight="2"
                             android:gravity="center_horizontal"
+                            android:inputType="numberDecimal"
+                            android:backgroundTint="@color/colorPrimary"
                             />
 
                         <TextView
@@ -190,14 +290,17 @@
                             android:drawableEnd="@drawable/table_border"
                             />
 
-                        <TextView
+                        <EditText
+                            android:id="@+id/et_jumlahBotolP"
                             android:layout_width="50dp"
                             android:layout_height="wrap_content"
-                            android:text="1"
+                            android:text=""
                             android:padding="10sp"
                             android:textSize="12sp"
+                            android:inputType="numberDecimal"
                             android:layout_weight="2"
                             android:gravity="center_horizontal"
+                            android:backgroundTint="@color/colorPrimary"
                             />
 
                         <TextView
@@ -226,14 +329,17 @@
                             android:drawableEnd="@drawable/table_border"
                             />
 
-                        <TextView
+                        <EditText
+                            android:id="@+id/et_jumlahDuplex"
                             android:layout_width="50dp"
                             android:layout_height="wrap_content"
-                            android:text="1"
+                            android:text=""
                             android:padding="10sp"
+                            android:inputType="numberDecimal"
                             android:textSize="12sp"
                             android:layout_weight="2"
                             android:gravity="center_horizontal"
+                            android:backgroundTint="@color/colorPrimary"
                             />
 
                         <TextView
@@ -253,7 +359,7 @@
                         <TextView
                             android:layout_width="40dp"
                             android:layout_height="wrap_content"
-                            android:text="Borol Kaca"
+                            android:text="Botol Kaca"
                             android:padding="10sp"
                             android:textSize="12sp"
                             android:layout_weight="4"
@@ -262,14 +368,17 @@
                             android:drawableEnd="@drawable/table_border"
                             />
 
-                        <TextView
+                        <EditText
+                            android:id="@+id/et_jumlahBotolK"
                             android:layout_width="50dp"
                             android:layout_height="wrap_content"
-                            android:text="1"
+                            android:text=""
                             android:padding="10sp"
+                            android:inputType="numberDecimal"
                             android:textSize="12sp"
                             android:layout_weight="2"
                             android:gravity="center_horizontal"
+                            android:backgroundTint="@color/colorPrimary"
                             />
 
                         <TextView
@@ -298,14 +407,17 @@
                             android:drawableEnd="@drawable/table_border"
                             />
 
-                        <TextView
+                        <EditText
+                            android:id="@+id/et_jumlahLogam"
                             android:layout_width="50dp"
+                            android:inputType="numberDecimal"
                             android:layout_height="wrap_content"
-                            android:text="1"
+                            android:text=""
                             android:padding="10sp"
                             android:textSize="12sp"
                             android:layout_weight="2"
                             android:gravity="center_horizontal"
+                            android:backgroundTint="@color/colorPrimary"
                             />
 
                         <TextView
@@ -322,6 +434,75 @@
                             />
                     </TableRow>
 
+                    <TableRow>
+                        <View
+                            android:layout_width="40dp"
+                            android:layout_height="wrap_content"
+                            android:padding="10sp"
+                            android:layout_weight="4"
+                            android:layout_marginStart="10dp"
+                            />
+
+                        <TextView
+                            android:layout_width="40dp"
+                            android:layout_height="wrap_content"
+                            android:text="TOTAL"
+                            android:padding="10sp"
+                            android:textSize="14sp"
+                            android:layout_weight="4"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorPrimary"
+                            />
+
+                        <TextView
+                            android:id="@+id/totalHarga"
+                            android:layout_width="30dp"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:padding="10sp"
+                            android:textSize="12sp"
+                            android:layout_weight="4"
+                            android:gravity="right"
+                            android:layout_marginRight="20dp"
+                            android:background="@drawable/bg_cardview_stroke"
+                            />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_marginBottom="10dp">
+                        <View
+                            android:layout_width="40dp"
+                            android:layout_height="wrap_content"
+                            android:padding="10sp"
+                            android:layout_weight="4"
+                            android:layout_marginStart="10dp"
+                            />
+
+                        <Button
+                            android:id="@+id/simpanData"
+                            android:layout_width="30dp"
+                            android:layout_height="wrap_content"
+                            android:elevation="5dp"
+                            android:text="Simpan"
+                            android:padding="10sp"
+                            android:textSize="12sp"
+                            android:layout_weight="4"
+                            android:gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/bg_rounded_button"
+                            android:theme="@style/AppTheme"
+                            />
+
+                        <View
+                            android:layout_width="40dp"
+                            android:layout_height="wrap_content"
+                            android:padding="10sp"
+                            android:layout_weight="4"
+                            android:layout_marginStart="10dp"
+                            />
+                    </TableRow>
+
                 </TableLayout>
 
             </androidx.cardview.widget.CardView>
@@ -329,7 +510,5 @@
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
-
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

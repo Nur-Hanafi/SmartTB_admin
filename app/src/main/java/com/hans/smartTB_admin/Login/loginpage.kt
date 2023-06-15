@@ -12,7 +12,7 @@ import com.hans.smartTB_admin.databinding.ActivityLoginpageBinding
 
 class loginpage : AppCompatActivity() {
 
-    lateinit var binding: ActivityLoginpageBinding
+    private lateinit var binding: ActivityLoginpageBinding
     lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,10 +24,13 @@ class loginpage : AppCompatActivity() {
 
         binding.ForgetPassword.setOnClickListener {
             val intent = Intent(this, ForgotPassword::class.java)
+            if (binding.edtEmailLogin.text != null)
+                intent.putExtra("email", binding.edtEmailLogin.text.toString()) else
+                intent.putExtra("email", "")
             startActivity(intent)
         }
 
-        binding.tvToRegister.setOnClickListener {
+        binding.tekslogo.setOnClickListener {
             val intent = Intent(this, Register::class.java)
             startActivity(intent)
         }

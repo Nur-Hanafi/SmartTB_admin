@@ -17,7 +17,7 @@ import com.hans.smartTB_admin.databinding.ActivityRegisterBinding
 import java.io.ByteArrayOutputStream
 import java.util.*
 
-lateinit var binding : ActivityRegisterBinding
+private lateinit var binding : ActivityRegisterBinding
 lateinit var auth : FirebaseAuth
 lateinit var firestore: FirebaseFirestore
 

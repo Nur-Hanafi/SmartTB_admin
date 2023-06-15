@@ -1,7 +1,9 @@
 package com.hans.smartTB_admin
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.view.ContentInfoCompat.Flags
 import com.google.firebase.firestore.FirebaseFirestore
 import com.hans.smartTB_admin.databinding.ActivityHargaSampahBinding
 import java.text.SimpleDateFormat
@@ -18,6 +20,10 @@ class hargaSampah : AppCompatActivity() {
 
         firestore = FirebaseFirestore.getInstance()
 
+        binding.toolbar.setNavigationOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+
         firestore.collection("sampah").document("dataHarga").get()
             .addOnSuccessListener{
                 val waktu = it.getTimestamp("tanggal")
@@ -26,7 +32,6 @@ class hargaSampah : AppCompatActivity() {
                 binding.hargaDuplex.text = it.getDouble("duplex")?.toInt().toString()
                 binding.hargaKardus.text = it.getDouble("kardus")?.toInt().toString()
                 binding.hargaLogam.text = it.getDouble("logam")?.toInt().toString()
-
                 // Menampilkan timestamp pada TextView
                 val formattedTimestamp = formatTimestamp(waktu)
                 binding.tanggalUpdate.text = "Harga Terbaru Per: $formattedTimestamp"

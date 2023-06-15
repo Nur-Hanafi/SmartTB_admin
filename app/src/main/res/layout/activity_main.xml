@@ -97,24 +97,28 @@
 
         </LinearLayout>
 
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="Data Sensor"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_header"
             android:layout_width="match_parent"
-            android:layout_height="210dp"
+            android:layout_height="360dp"
             android:layout_margin="10dp"
             app:cardCornerRadius="10dp"
             app:cardElevation="5dp">
-
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerNode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
-
-            </ScrollView>
 
         </androidx.cardview.widget.CardView>
 
