@@ -253,7 +253,7 @@
                         <TextView
                             android:layout_width="40dp"
                             android:layout_height="wrap_content"
-                            android:text="Borol Kaca"
+                            android:text="Botol Kaca"
                             android:padding="10sp"
                             android:textSize="12sp"
                             android:layout_weight="4"

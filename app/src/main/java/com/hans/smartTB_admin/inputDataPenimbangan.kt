@@ -9,7 +9,6 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RoundRectShape
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.service.controls.ControlsProviderService.TAG
 import android.text.Editable
@@ -20,15 +19,12 @@ import android.util.Log
 import android.view.View
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.hans.smartTB_admin.databinding.ActivityInputDataPenimbanganBinding
 import java.text.SimpleDateFormat
 import java.util.Locale
-import com.google.firebase.Timestamp
-import com.google.firebase.firestore.FieldValue
-import java.lang.reflect.Field
-import java.util.Date
-import kotlin.time.Duration.Companion.microseconds
 
 
 class inputDataPenimbangan : AppCompatActivity() {
@@ -319,5 +315,8 @@ class inputDataPenimbangan : AppCompatActivity() {
         } else {
             ""
         }
+
     }
+
+
 }

@@ -30,12 +30,12 @@ class riwayat : Fragment() {
             layoutManager = LinearLayoutManager(context)
 
         }
-        riwayatPesanan()
+        riwayatPenyetoran()
     }
 
-    private fun riwayatPesanan() {
-        val listPesananRiwayat = FirebaseFirestore.getInstance().collection("riwayat")
-        listPesananRiwayat.get()
+    private fun riwayatPenyetoran() {
+        val listRiwayat = FirebaseFirestore.getInstance().collection("riwayat")
+        listRiwayat.get()
             .addOnSuccessListener { documents ->
                 for (document in documents)
                 {

@@ -1,6 +1,7 @@
 package com.hans.smartTB_admin
 
 import android.Manifest
+import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.view.View
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -19,9 +21,12 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.hans.smartTB_admin.Login.loginpage
 import com.hans.smartTB_admin.databinding.ActivityUpdateProfileBinding
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -37,11 +42,14 @@ class updateProfile : AppCompatActivity() {
     private lateinit var hasilGender: String
     private lateinit var binding: ActivityUpdateProfileBinding
     private lateinit var currentPhotoPath:String
+    private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityUpdateProfileBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        firebaseAuth = FirebaseAuth.getInstance()
 
         //memasukkan data saat ini ke form
         val bundle = intent.extras
@@ -86,6 +94,10 @@ class updateProfile : AppCompatActivity() {
         //kirim data update ke firestore
         binding.buttonUpdate.setOnClickListener{
             updateData()
+        }
+
+        binding.btnChangePass.setOnClickListener {
+            changePass()
         }
 
     }
@@ -294,6 +306,97 @@ class updateProfile : AppCompatActivity() {
                 Toast.makeText(this, "Failed 2!", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun changePass() {
+        val user = firebaseAuth.currentUser
+
+        binding.cvCurrentPass.visibility = View.VISIBLE
+
+        binding.btnCancel.setOnClickListener {
+            binding.cvCurrentPass.visibility = View.GONE
+        }
+
+        binding.btnConfirm.setOnClickListener btnConfirm@{
+            val pass = binding.edtCurrentPassword.text.toString()
+            if (pass.isEmpty()){
+                binding.edtCurrentPassword.error = "Password Tidak Boleh Kosong"
+                binding.edtCurrentPassword.requestFocus()
+                return@btnConfirm
+            }
+            user.let {
+                val userCredential = EmailAuthProvider.getCredential(it?.email!!,pass)
+                it.reauthenticate(userCredential).addOnCompleteListener {  task ->
+                    when {
+                        task.isSuccessful -> {
+                            binding.cvCurrentPass.visibility = View.GONE
+                            binding.cvUpdatePass.visibility = View.VISIBLE
+                        }
+                        task.exception is FirebaseAuthInvalidCredentialsException -> {
+                            binding.edtCurrentPassword.error = "Password Salah"
+                            binding.edtCurrentPassword.requestFocus()
+                        }
+                        else -> {
+                            Toast.makeText(this, "${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+            binding.btnNewCancel.setOnClickListener {
+                binding.cvCurrentPass.visibility = View.GONE
+                binding.cvUpdatePass.visibility = View.GONE
+            }
+            binding.btnNewChange.setOnClickListener newChangePassword@{
+                val newPass = binding.edtNewPass.text.toString()
+                val passConfirm = binding.edtConfirmPass.text.toString()
+
+                if (newPass.isEmpty()){
+                    binding.edtCurrentPassword.error = "Password Tidak Boleh Kosong"
+                    binding.edtCurrentPassword.requestFocus()
+                    return@newChangePassword
+                }
+                if (passConfirm.isEmpty()){
+                    binding.edtCurrentPassword.error = "Ulangi Password Baru"
+                    binding.edtCurrentPassword.requestFocus()
+                    return@newChangePassword
+                }
+                if (newPass.length < 6) {
+                    binding.edtCurrentPassword.error = "Password harus lebih dari 6 karakter"
+                    binding.edtCurrentPassword.requestFocus()
+                    return@newChangePassword
+                }
+                if (passConfirm.length < 6) {
+                    binding.edtCurrentPassword.error = "Password Tidak Sama"
+                    binding.edtCurrentPassword.requestFocus()
+                    return@newChangePassword
+                }
+                if (newPass != passConfirm) {
+                    binding.edtCurrentPassword.error = "Password Tidak Sama"
+                    binding.edtCurrentPassword.requestFocus()
+                    return@newChangePassword
+                }
+                user?.let {
+                    user.updatePassword(newPass).addOnCompleteListener {
+                        if (it.isSuccessful){
+                            Toast.makeText(this, "Password Berhasil di Update", Toast.LENGTH_SHORT).show()
+                            successLogout()
+                        }else {
+                            Toast.makeText(this, "${it.exception?.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    private fun successLogout() {
+        firebaseAuth.signOut()
+
+        val intent = Intent(this, loginpage::class.java)
+        startActivity(intent)
+        this.finish()
+        Toast.makeText(this, "Silahkan Login Kembali", Toast.LENGTH_SHORT).show()
     }
 
 }

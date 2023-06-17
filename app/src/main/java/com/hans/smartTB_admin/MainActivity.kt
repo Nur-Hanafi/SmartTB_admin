@@ -129,6 +129,12 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        val Pencairan = findViewById<CardView>(R.id.cvPencairanDana)
+        Pencairan.setOnClickListener {
+            val intent = Intent(this@MainActivity, PencairanDana::class.java)
+            startActivity(intent)
+        }
+
     }
 
     private fun fetchData() {

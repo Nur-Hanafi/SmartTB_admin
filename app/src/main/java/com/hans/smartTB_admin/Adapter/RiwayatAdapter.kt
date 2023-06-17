@@ -47,6 +47,8 @@ class RiwayatAdapter(private val context: Context, private var ListRiwayat: Muta
         holder.cardRiwayat.setOnClickListener {
             val intent = Intent(context, detailRiwayat::class.java)
             intent.putExtra("docID", ListRiwayat[position].docID)
+            intent.putExtra("tanggal", formattedTimestamp)
+            intent.putExtra("nama", ListRiwayat[position].namaNasabah)
             context.startActivity(intent)
         }
 
@@ -65,5 +67,10 @@ class RiwayatAdapter(private val context: Context, private var ListRiwayat: Muta
 
     override fun getItemCount(): Int {
         return ListRiwayat.size
+    }
+
+    fun clearData() {
+        ListRiwayat.clear()
+        notifyDataSetChanged()
     }
 }
