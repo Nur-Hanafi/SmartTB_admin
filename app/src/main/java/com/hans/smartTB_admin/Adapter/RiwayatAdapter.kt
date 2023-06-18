@@ -49,6 +49,7 @@ class RiwayatAdapter(private val context: Context, private var ListRiwayat: Muta
             intent.putExtra("docID", ListRiwayat[position].docID)
             intent.putExtra("tanggal", formattedTimestamp)
             intent.putExtra("nama", ListRiwayat[position].namaNasabah)
+            intent.putExtra("total", ListRiwayat[position].pendapatan.toString())
             context.startActivity(intent)
         }
 

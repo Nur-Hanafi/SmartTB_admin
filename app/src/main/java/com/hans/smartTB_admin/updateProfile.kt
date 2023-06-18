@@ -289,7 +289,7 @@ class updateProfile : AppCompatActivity() {
                         dbupdate.collection("admin").document(email!!).update(bahanProfile)
                             .addOnSuccessListener { documentReference ->
                                 Toast.makeText(this, "Berhasil Memperbarui Profil", Toast.LENGTH_SHORT).show()
-                                val intent = Intent(this, MainActivity::class.java)
+                                val intent = Intent(this, user_Profile::class.java)
                                 startActivity(intent)
                             }
                             .addOnFailureListener { exception ->

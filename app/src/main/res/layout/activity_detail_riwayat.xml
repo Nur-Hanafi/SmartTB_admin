@@ -26,7 +26,7 @@
                 android:textAllCaps="true"
                 android:layout_marginEnd="20dp"
                 android:layout_gravity="center"
-                android:text="Harga Sampah"
+                android:text="RINCIAN PENGAMBILAN SAMPAH"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -50,6 +50,7 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:layout_marginTop="20dp"
                 android:layout_margin="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
@@ -100,11 +101,11 @@
 
                     <TableRow
                         android:background="@drawable/bg_rounded_all"
-                        android:layout_marginBottom="10dp">
+                        android:layout_marginBottom="5dp">
 
                         <TextView
                             android:layout_width="50dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="40dp"
                             android:text="Nama"
                             android:textColor="@android:color/white"
                             android:padding="10sp"
@@ -119,7 +120,7 @@
                             android:scrollHorizontally="true"
                             android:background="@drawable/bg_searchbar"
                             android:layout_width="50dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="40dp"
                             android:text="Nama Nasabah"
                             android:textColor="@color/colorPrimary"
                             android:padding="10sp"
@@ -127,6 +128,42 @@
                             android:layout_weight="2"
                             android:textStyle="bold"
                             android:gravity="center_horizontal"
+                            />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:background="@drawable/bg_rounded_all"
+                        android:layout_marginBottom="10dp">
+
+                        <TextView
+                            android:layout_width="50dp"
+                            android:layout_height="40dp"
+                            android:text="Status"
+                            android:textColor="@android:color/white"
+                            android:padding="10sp"
+                            android:textSize="14sp"
+                            android:layout_weight="1"
+                            android:textStyle="bold"
+                            android:gravity="center"
+                            />
+
+                        <TextView
+                            android:id="@+id/tv_status"
+                            android:scrollHorizontally="true"
+                            android:background="@drawable/bg_searchbar"
+                            android:layout_width="50dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:text="Status"
+                            android:textColor="@color/colorPrimary"
+                            android:padding="10sp"
+                            android:textSize="13sp"
+                            android:layout_weight="2"
+                            android:textStyle="bold"
+                            android:gravity="center_horizontal"
+                            android:drawableRight="@drawable/baseline_edit_note_24"
+                            android:drawableTint="@color/colorPrimary"
                             />
 
                     </TableRow>
@@ -359,6 +396,62 @@
                             />
                     </TableRow>
 
+                    <TableRow>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_weight="1"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:background="@color/colorPrimary"
+                            />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_margin="2dp">
+
+                        <TextView
+                            android:layout_width="40dp"
+                            android:layout_height="wrap_content"
+                            android:text="Jumlah Yang Harus Dibayarkan"
+                            android:padding="10sp"
+                            android:textSize="13sp"
+                            android:layout_weight="2"
+                            android:gravity="right"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorPrimary"
+                            />
+
+                        <TextView
+                            android:id="@+id/totalHarga"
+                            android:layout_width="10dp"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:paddingLeft="10dp"
+                            android:paddingBottom="10dp"
+                            android:paddingRight="20dp"
+                            android:paddingTop="10dp"
+                            android:textSize="12sp"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/bg_cardview_stroke"
+                            />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_marginBottom="10dp">
+                        <View
+                            android:layout_width="40dp"
+                            android:layout_height="30dp"
+                            android:padding="10sp"
+                            android:layout_weight="4"
+                            android:layout_marginStart="10dp"
+                            android:background="@drawable/bg_rounded_bottom"
+                            />
+                    </TableRow>
+
                 </TableLayout>
 
             </androidx.cardview.widget.CardView>
@@ -366,5 +459,94 @@
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <!--        card view status-->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:visibility="visible"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="7dp"
+        app:strokeWidth = "2dp"
+        app:strokeColor="@color/colorPrimary"
+        android:theme="@style/AppTheme">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Status Pencairan Dana"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:background="@drawable/bg_cardview_stroke"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingRight="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="15dp">
+
+                <CheckBox
+                    android:id="@+id/checkBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
+                    android:text="Tandai Tunas"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_weight="2"
+                    android:textColor="@color/white"
+                    android:text="Batal"
+                    android:background="@drawable/bg_rounded_all_black"
+                    android:theme="@style/AppTheme"/>
+
+                <Button
+                    android:id="@+id/btn_confirm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_rounded_all"
+                    android:theme="@style/AppTheme"
+                    android:text="Konfirmasi"
+                    android:textColor="@color/white"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
