@@ -158,6 +158,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        //baca data node
         reference.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
                 val id = dataSnapshot.key

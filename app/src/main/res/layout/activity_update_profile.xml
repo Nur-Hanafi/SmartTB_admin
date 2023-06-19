@@ -52,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:backgroundTint="@color/black"
-                    android:text="UBAH PROFIL PENGGUNA"
+                    android:text="UBAH PROFIL ADMIN"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="22sp"

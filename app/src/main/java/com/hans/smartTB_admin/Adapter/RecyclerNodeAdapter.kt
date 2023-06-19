@@ -1,10 +1,16 @@
 package com.hans.smartTB_admin.Adapter
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.hans.smartTB_admin.MainActivity
 import com.hans.smartTB_admin.R
 import com.hans.smartTB_admin.databinding.RecyclerItemBinding
+import com.hans.smartTB_admin.jemputSampah
+import kotlinx.coroutines.NonDisposableHandle.parent
 
 
 class RecyclerNodeAdapter : RecyclerView.Adapter<RecyclerNodeAdapter.ViewHolder>() {
@@ -24,6 +30,11 @@ class RecyclerNodeAdapter : RecyclerView.Adapter<RecyclerNodeAdapter.ViewHolder>
             binding.tvProgress.text = "$persentase%"
             binding.tvNode.text = id
             updateIconBaterai(binding, baterai)
+
+            binding.cvNodeItem.setOnClickListener{
+                val intent = Intent(it.context, jemputSampah::class.java )
+                it.context.startActivity(intent)
+            }
         }
 
         private fun updateIconBaterai(itemBinding: RecyclerItemBinding,baterai: Float?) {
