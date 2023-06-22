@@ -25,7 +25,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@drawable/bg_cardview_stroke_10dp">
 
                 <ImageView
                     android:layout_width="64dp"
@@ -42,7 +43,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="2dp"
                     android:layout_margin="10dp"
                     android:background="@color/colorPrimary" />
 
@@ -71,7 +72,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@drawable/bg_cardview_stroke_10dp">
 
                 <ImageView
                     android:layout_width="70dp"
@@ -89,7 +91,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="2dp"
                     android:layout_margin="10dp"
                     android:background="@color/colorPrimary" />
 
@@ -109,7 +111,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@drawable/bg_cardview_stroke_10dp">
 
                 <ImageView
                     android:layout_width="70dp"
@@ -126,7 +129,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="2dp"
                     android:layout_margin="10dp"
                     android:background="@color/colorPrimary" />
 
@@ -154,7 +157,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@drawable/bg_cardview_stroke_10dp">
 
                 <ImageView
                     android:layout_width="70dp"
@@ -171,7 +175,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="2dp"
                     android:layout_margin="10dp"
                     android:background="@color/colorPrimary" />
 

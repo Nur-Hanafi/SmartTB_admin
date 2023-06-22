@@ -97,7 +97,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
-                    android:backgroundTint="#FAFFF6">
+                    android:background="@drawable/bg_cardview_stroke_10dp">
 
                     <TableRow
                         android:background="@drawable/bg_rounded_all"
@@ -127,7 +127,7 @@
                             android:textSize="14sp"
                             android:layout_weight="2"
                             android:textStyle="bold"
-                            android:gravity="center_horizontal"
+                            android:gravity="center"
                             />
 
                     </TableRow>
@@ -468,7 +468,7 @@
         android:layout_gravity="center"
         android:layout_margin="20dp"
         android:visibility="gone"
-        app:cardCornerRadius="20dp"
+        app:cardCornerRadius="10dp"
         app:cardElevation="7dp"
         app:strokeWidth = "2dp"
         app:strokeColor="@color/colorPrimary"
@@ -478,7 +478,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:padding="20dp"
+            android:background="@drawable/bg_cardview_stroke_10dp">
 
             <TextView
                 android:layout_width="match_parent"
