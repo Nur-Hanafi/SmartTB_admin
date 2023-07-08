@@ -33,7 +33,7 @@ class RecyclerJemput(private var listNode: MutableList<DCRecyclerNode>) : Recycl
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val context = holder.itemView.context
         val data = listNode[position]
-        holder.binding.emailNasabah.text = "Email: "+data.Email?.lowercase()
+        holder.binding.emailNasabah.text = "Email: \n"+data.Email?.lowercase()
         holder.binding.tvNodeID.text = "Node ID: " + data.NodeID
         holder.binding.tvBaterai.text = "Baterai: ${data.Baterai}%"
 
