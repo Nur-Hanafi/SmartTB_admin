@@ -1,6 +1,9 @@
 package com.hans.smartTB_admin
 
 import android.app.AlertDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -11,14 +14,19 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RoundRectShape
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.cardview.widget.CardView
+import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,6 +40,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.hans.smartTB_admin.Adapter.RecyclerNodeAdapter
 import com.hans.smartTB_admin.Fragment.riwayat
 import com.hans.smartTB_admin.Login.loginpage
+import com.hans.smartTB_admin.Model.OnSwipeTouchListener
 import com.hans.smartTB_admin.databinding.ActivityMainBinding
 
 
@@ -41,6 +50,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var foto : String
     private lateinit var database: FirebaseDatabase
     private lateinit var adapter: RecyclerNodeAdapter
+    lateinit var pendingIntent: PendingIntent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // Langkah 1: Menghubungkan aplikasi Android ke Database Firebase
@@ -51,11 +61,27 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //intent dari notifikasi
+        val intent = Intent(this, MainActivity::class.java)
+        pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+
         //cek intent
         val bundle = intent.extras
         if(bundle != null) {
             if (bundle?.getString("direct") == "true") {
                 replaceFragment(riwayat())
+            }
+        }
+
+        binding.switchTheme.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                // Mengatur tema ke mode malam
+                delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
+                binding.modeTema.setImageResource(R.drawable.baseline_mode_night_24)
+            } else {
+                // Mengatur tema ke mode siang
+                delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_NO
+                binding.modeTema.setImageResource(R.drawable.baseline_light_mode_24)
             }
         }
 
@@ -69,14 +95,15 @@ class MainActivity : AppCompatActivity() {
         val layoutManager= GridLayoutManager(this, 2)
         binding.recyclerNode.layoutManager = layoutManager
 
+        //mengatur jarak antar item
         val itemDecoration = object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
                 val position = parent.getChildAdapterPosition(view)
                 val column = position % 2
-                if (column == 0) {
-                    outRect.right = 10.dpToPx(parent.context)
+                if (column == 1) {
+                    outRect.right = 20.dpToPx(parent.context)
                 } else {
-                    outRect.left = 10.dpToPx(parent.context)
+                    outRect.left = 20.dpToPx(parent.context)
                 }
             }
         }
@@ -109,6 +136,19 @@ class MainActivity : AppCompatActivity() {
                 .putExtra("foto", foto.trim())
             startActivity(intent)
         }
+
+        //swipe gesture untuk refresh, tapi tidak berfungsi karena scrollview di MainActivity
+//        binding.imageView.setOnTouchListener(object : OnSwipeTouchListener(this@MainActivity) {
+//            override fun onSwipeBottom() {
+//                // Handle swipe bottom
+////                recreate()
+//                finish()
+//                overridePendingTransition(0, 0)
+//                startActivity(intent)
+//                overridePendingTransition(0, 0)
+//            }
+//        })
+
 
         //Harga Sampah
         val harga = findViewById<CardView>(R.id.cvHarga)
@@ -163,12 +203,29 @@ class MainActivity : AppCompatActivity() {
             override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
                 val id = dataSnapshot.key
                 val jarak = dataSnapshot.child("jarak").getValue(String::class.java)
-                val batt = dataSnapshot.child("jarak").getValue(String::class.java)
+                val batt = dataSnapshot.child("Baterai").getValue(String::class.java)
                 adapter.add("$id, $jarak, $batt")
+                val baterai = batt.toString().trim().toFloat()
+                val modulus = baterai.toInt()
+                if (baterai <= 10 && modulus%2 == 0) {
+                    notifikasiBaterai(id.toString())
+                }
             }
 
             override fun onChildChanged(dataSnapshot: DataSnapshot, previousChildName: String?) {
                 // Handle changes to data
+                val id = dataSnapshot.key
+                val jarak = dataSnapshot.child("jarak").getValue(String::class.java)
+                val batt = dataSnapshot.child("Baterai").getValue(String::class.java)
+                val baterai = batt.toString().trim().toFloat()
+                val modulus = baterai.toInt()
+                if (baterai <= 10 && modulus%2 == 0) {
+                    notifikasiBaterai(id.toString())
+                }
+                if (jarak != null && jarak.toFloat() <= 10) {
+                    notifikasiSampah(id.toString())
+                }
+
             }
 
             override fun onChildRemoved(dataSnapshot: DataSnapshot) {
@@ -284,8 +341,75 @@ class MainActivity : AppCompatActivity() {
         fragmentTransaction.commit()
     }
 
+    private fun notifikasiBaterai(Node: String) {
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+
+        val channelId = "low_battery_channel"
+        val channelName = "Low Battery"
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val notificationChannel = NotificationChannel(channelId, channelName, importance)
+            notificationChannel.enableLights(true)
+            notificationChannel.lightColor = Color.RED
+            notificationChannel.enableVibration(true)
+            notificationChannel.vibrationPattern = longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400)
+            notificationManager.createNotificationChannel(notificationChannel)
+        }
+
+        val notificationBuilder = NotificationCompat.Builder(this, channelId)
+        notificationBuilder.setAutoCancel(true)
+            .setDefaults(NotificationCompat.DEFAULT_ALL)
+            .setWhen(System.currentTimeMillis())
+            .setSmallIcon(R.drawable.logo)
+            .setContentTitle("Baterai Lemah")
+            .setContentText("Baterai $Node Dibawah 10%, Mohon Ingatkan Nasabah Untuk Segera Mengisi Ulang Baterai Perangkat")
+            .setContentInfo("Info")
+            .setContentIntent(pendingIntent)
+
+        val soundUri = Uri.parse("android.resource://" + packageName + "/" + R.raw.android_low_battery)
+        notificationBuilder.setSound(soundUri)
+
+        notificationManager.notify(1, notificationBuilder.build())
     }
+
+    private fun notifikasiSampah(Node: String) {
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+
+        val channelId = "trash_full_channel"
+        val channelName = "Tempat Sampah Penuh"
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val notificationChannel = NotificationChannel(channelId, channelName, importance)
+            notificationChannel.enableLights(true)
+            notificationChannel.lightColor = Color.RED
+            notificationChannel.enableVibration(true)
+            notificationChannel.vibrationPattern = longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400)
+            notificationManager.createNotificationChannel(notificationChannel)
+        }
+
+        val notificationBuilder = NotificationCompat.Builder(this, channelId)
+        notificationBuilder.setAutoCancel(true)
+            .setDefaults(NotificationCompat.DEFAULT_ALL)
+            .setWhen(System.currentTimeMillis())
+            .setSmallIcon(R.drawable.logo)
+            .setContentTitle("Tempat Sampah Penuh")
+            .setContentText("Tempat Sampah Pada $Node Sudah Penuh, Mohon Segera Melakukan Penjemputan")
+            .setContentInfo("Info")
+            .setContentIntent(pendingIntent)
+
+        val soundUri = Uri.parse("android.resource://" + packageName + "/" + R.raw.android_low_battery)
+        notificationBuilder.setSound(soundUri)
+
+        notificationManager.notify(1, notificationBuilder.build())
+    }
+
+    override fun onBackPressed() {
+        showLogoutConfirmationDialog()
+    }
+
+}
 
 fun Int.dpToPx(context: Context): Int {
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, this.toFloat(), context.resources.displayMetrics).toInt()
 }
+

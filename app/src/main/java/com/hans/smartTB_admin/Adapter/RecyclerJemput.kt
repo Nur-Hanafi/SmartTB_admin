@@ -37,11 +37,13 @@ class RecyclerJemput(private var listNode: MutableList<DCRecyclerNode>) : Recycl
         holder.binding.tvNodeID.text = "Node ID: " + data.NodeID
         holder.binding.tvBaterai.text = "Baterai: ${data.Baterai}%"
 
-        val Maxsampah = 100
+        val Maxsampah = 60
         val jarak = data.jarak?.toFloat()
         if (jarak != null && jarak <= Maxsampah)
         {
-            val kapasitas = (((Maxsampah - jarak!!)/Maxsampah)*100).toInt()
+            var kapasitas = (((Maxsampah - jarak!!)/(Maxsampah-10))*100).toInt()
+            if (kapasitas <= 1)
+            {kapasitas = 1}
             holder.binding.tvKapasitas.text = "Kapasitas Terpakai: $kapasitas%"
             holder.binding.tvProgress.text = "$kapasitas%"
             holder.binding.pbKapasitas.progress=kapasitas

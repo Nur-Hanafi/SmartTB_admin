@@ -14,15 +14,19 @@ import kotlinx.coroutines.NonDisposableHandle.parent
 
 
 class RecyclerNodeAdapter : RecyclerView.Adapter<RecyclerNodeAdapter.ViewHolder>() {
-    private val items = mutableListOf<String>()
+    val items = mutableListOf<String>()
 
     class ViewHolder(val binding: RecyclerItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: String) {
             val data = item.split(",")
             val id = data?.get(0)
             val jarak = data?.get(1)?.trim()?.toFloat()
-            val Maxsampah = 100
-            val persentase = (Maxsampah - jarak!!).toInt()
+            val Maxsampah = 58
+            var persentase = (((Maxsampah - jarak!!)/(Maxsampah-10))*100).toInt()
+            when{
+                persentase <=1 -> persentase = 1
+                persentase >= 100 -> persentase = 100
+            }
 
             val baterai = data?.get(2)?.trim()?.toFloat()
             binding.tvBateraibar.text = "${baterai?.toInt()}%"
@@ -70,5 +74,6 @@ class RecyclerNodeAdapter : RecyclerView.Adapter<RecyclerNodeAdapter.ViewHolder>
     fun add(item: String) {
         items.add(item)
         notifyItemInserted(items.size - 1)
+        notifyDataSetChanged()
     }
 }
