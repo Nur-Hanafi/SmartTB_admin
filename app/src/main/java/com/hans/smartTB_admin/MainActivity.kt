@@ -206,9 +206,11 @@ class MainActivity : AppCompatActivity() {
                 val batt = dataSnapshot.child("Baterai").getValue(String::class.java)
                 adapter.add("$id, $jarak, $batt")
                 val baterai = batt.toString().trim().toFloat()
-                val modulus = baterai.toInt()
-                if (baterai <= 10 && modulus%2 == 0) {
+                if (baterai <= 10) {
                     notifikasiBaterai(id.toString())
+                }
+                if (jarak != null && jarak.toFloat() <= 10) {
+                    notifikasiSampah(id.toString())
                 }
             }
 
@@ -218,8 +220,7 @@ class MainActivity : AppCompatActivity() {
                 val jarak = dataSnapshot.child("jarak").getValue(String::class.java)
                 val batt = dataSnapshot.child("Baterai").getValue(String::class.java)
                 val baterai = batt.toString().trim().toFloat()
-                val modulus = baterai.toInt()
-                if (baterai <= 10 && modulus%2 == 0) {
+                if (baterai <= 10 ) {
                     notifikasiBaterai(id.toString())
                 }
                 if (jarak != null && jarak.toFloat() <= 10) {
@@ -357,6 +358,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
+        val soundUri = Uri.parse("android.resource://" + packageName + "/" + R.raw.android_low_battery)
         notificationBuilder.setAutoCancel(true)
             .setDefaults(NotificationCompat.DEFAULT_ALL)
             .setWhen(System.currentTimeMillis())
@@ -365,11 +367,10 @@ class MainActivity : AppCompatActivity() {
             .setContentText("Baterai $Node Dibawah 10%, Mohon Ingatkan Nasabah Untuk Segera Mengisi Ulang Baterai Perangkat")
             .setContentInfo("Info")
             .setContentIntent(pendingIntent)
+            .setSound(soundUri)
+            .setSilent(false)
 
-        val soundUri = Uri.parse("android.resource://" + packageName + "/" + R.raw.android_low_battery)
-        notificationBuilder.setSound(soundUri)
-
-        notificationManager.notify(1, notificationBuilder.build())
+        notificationManager.notify(2, notificationBuilder.build())
     }
 
     private fun notifikasiSampah(Node: String) {
@@ -388,6 +389,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
+        val soundUri = Uri.parse("android.resource://" + packageName + "/" + R.raw.android_low_battery)
         notificationBuilder.setAutoCancel(true)
             .setDefaults(NotificationCompat.DEFAULT_ALL)
             .setWhen(System.currentTimeMillis())
@@ -396,9 +398,9 @@ class MainActivity : AppCompatActivity() {
             .setContentText("Tempat Sampah Pada $Node Sudah Penuh, Mohon Segera Melakukan Penjemputan")
             .setContentInfo("Info")
             .setContentIntent(pendingIntent)
-
-        val soundUri = Uri.parse("android.resource://" + packageName + "/" + R.raw.android_low_battery)
-        notificationBuilder.setSound(soundUri)
+            .setSilent(false)
+            .setSound(soundUri)
+            .setPriority(2)
 
         notificationManager.notify(1, notificationBuilder.build())
     }

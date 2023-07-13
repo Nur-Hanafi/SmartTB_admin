@@ -42,8 +42,10 @@ class RecyclerJemput(private var listNode: MutableList<DCRecyclerNode>) : Recycl
         if (jarak != null && jarak <= Maxsampah)
         {
             var kapasitas = (((Maxsampah - jarak!!)/(Maxsampah-10))*100).toInt()
-            if (kapasitas <= 1)
-            {kapasitas = 1}
+            when {
+                kapasitas <= 1 -> kapasitas = 1
+                kapasitas >100 -> kapasitas =100
+            }
             holder.binding.tvKapasitas.text = "Kapasitas Terpakai: $kapasitas%"
             holder.binding.tvProgress.text = "$kapasitas%"
             holder.binding.pbKapasitas.progress=kapasitas
