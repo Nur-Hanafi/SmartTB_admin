@@ -19,7 +19,6 @@ import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.widget.Toast
@@ -40,7 +39,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.hans.smartTB_admin.Adapter.RecyclerNodeAdapter
 import com.hans.smartTB_admin.Fragment.riwayat
 import com.hans.smartTB_admin.Login.loginpage
-import com.hans.smartTB_admin.Model.OnSwipeTouchListener
 import com.hans.smartTB_admin.databinding.ActivityMainBinding
 
 
@@ -212,6 +210,9 @@ class MainActivity : AppCompatActivity() {
                 if (jarak != null && jarak.toFloat() <= 10) {
                     notifikasiSampah(id.toString())
                 }
+                if (jarak == "0.00"){
+                    notifikasiError(id.toString())
+                }
             }
 
             override fun onChildChanged(dataSnapshot: DataSnapshot, previousChildName: String?) {
@@ -225,6 +226,9 @@ class MainActivity : AppCompatActivity() {
                 }
                 if (jarak != null && jarak.toFloat() <= 10) {
                     notifikasiSampah(id.toString())
+                }
+                if (jarak == "0.00"){
+                    notifikasiError(id.toString())
                 }
 
             }
@@ -403,6 +407,37 @@ class MainActivity : AppCompatActivity() {
             .setPriority(2)
 
         notificationManager.notify(1, notificationBuilder.build())
+    }
+
+    private fun notifikasiError(nodeID: String) {
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        val channelId = "sensor_channel"
+        val channelName = "Troubleshooting"
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val notificationChannel = NotificationChannel(channelId, channelName, importance)
+            notificationChannel.enableLights(true)
+            notificationChannel.lightColor = Color.RED
+            notificationChannel.enableVibration(true)
+            notificationChannel.vibrationPattern = longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400)
+            notificationManager.createNotificationChannel(notificationChannel)
+        }
+
+        val notificationBuilder = NotificationCompat.Builder(this, channelId)
+        val soundUri = Uri.parse("android.resource://" + packageName + "/" + R.raw.android_low_battery)
+        notificationBuilder.setAutoCancel(true)
+            .setDefaults(NotificationCompat.DEFAULT_ALL)
+            .setWhen(System.currentTimeMillis())
+            .setSmallIcon(R.drawable.logo)
+            .setContentTitle("Sensor Bermasalah")
+            .setContentText("Terdapat masalah pada sensor $nodeID. Mohon segera melakukan pengecekan pada perangkat. Gunakan menu jemput sampah untuk meunjukkan titik $nodeID.")
+            .setContentInfo("Info")
+            .setContentIntent(pendingIntent)
+            .setSound(soundUri)
+            .setSilent(false)
+            .setPriority(2)
+
+        notificationManager.notify(3, notificationBuilder.build())
     }
 
     override fun onBackPressed() {

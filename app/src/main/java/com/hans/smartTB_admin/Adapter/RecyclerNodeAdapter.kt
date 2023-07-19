@@ -1,9 +1,16 @@
 package com.hans.smartTB_admin.Adapter
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.net.Uri
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.hans.smartTB_admin.MainActivity
@@ -23,10 +30,11 @@ class RecyclerNodeAdapter : RecyclerView.Adapter<RecyclerNodeAdapter.ViewHolder>
             val jarak = data?.get(1)?.trim()?.toFloat()
             val Maxsampah = 58
             var persentase = (((Maxsampah - jarak!!)/(Maxsampah-10))*100).toInt()
-            when{
-                persentase <=1 -> persentase = 1
+            when {
+                persentase <= 1 -> persentase = 1
                 persentase >= 100 -> persentase = 100
             }
+
 
             val baterai = data?.get(2)?.trim()?.toFloat()
             binding.tvBateraibar.text = "${baterai?.toInt()}%"
