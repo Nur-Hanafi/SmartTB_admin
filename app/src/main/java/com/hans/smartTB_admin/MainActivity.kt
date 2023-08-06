@@ -178,7 +178,7 @@ class MainActivity : AppCompatActivity() {
     private fun fetchData() {
         val email = auth.currentUser?.email!!.lowercase()
         val reference = database.getReference("Node")
-
+        //baca data user
         val Fstore = FirebaseFirestore.getInstance().collection("admin").document(email)
         Fstore.get().addOnSuccessListener{
             if (it != null) {
@@ -207,7 +207,7 @@ class MainActivity : AppCompatActivity() {
                 if (baterai <= 10) {
                     notifikasiBaterai(id.toString())
                 }
-                if (jarak != null && jarak.toFloat() <= 10) {
+                if (jarak != null && jarak.toFloat() <= 10 && jarak != "0.00") {
                     notifikasiSampah(id.toString())
                 }
                 if (jarak == "0.00"){
@@ -221,10 +221,11 @@ class MainActivity : AppCompatActivity() {
                 val jarak = dataSnapshot.child("jarak").getValue(String::class.java)
                 val batt = dataSnapshot.child("Baterai").getValue(String::class.java)
                 val baterai = batt.toString().trim().toFloat()
+                adapter.notifyDataSetChanged()
                 if (baterai <= 10 ) {
                     notifikasiBaterai(id.toString())
                 }
-                if (jarak != null && jarak.toFloat() <= 10) {
+                if (jarak != null && jarak.toFloat() <= 10 && jarak != "0.00") {
                     notifikasiSampah(id.toString())
                 }
                 if (jarak == "0.00"){

@@ -7,4 +7,5 @@ data class DCRecyclerNode(
     val Longitude: String?,
     val jarak: String?,
     val NodeID: String?,
+    val Alamat: String?,
 )

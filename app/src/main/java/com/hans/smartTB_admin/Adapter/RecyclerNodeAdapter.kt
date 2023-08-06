@@ -1,23 +1,12 @@
 package com.hans.smartTB_admin.Adapter
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.net.Uri
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.hans.smartTB_admin.MainActivity
 import com.hans.smartTB_admin.R
 import com.hans.smartTB_admin.databinding.RecyclerItemBinding
 import com.hans.smartTB_admin.jemputSampah
-import kotlinx.coroutines.NonDisposableHandle.parent
 
 
 class RecyclerNodeAdapter : RecyclerView.Adapter<RecyclerNodeAdapter.ViewHolder>() {
@@ -28,7 +17,7 @@ class RecyclerNodeAdapter : RecyclerView.Adapter<RecyclerNodeAdapter.ViewHolder>
             val data = item.split(",")
             val id = data?.get(0)
             val jarak = data?.get(1)?.trim()?.toFloat()
-            val Maxsampah = 58
+            val Maxsampah = 55
             var persentase = (((Maxsampah - jarak!!)/(Maxsampah-10))*100).toInt()
             when {
                 persentase <= 1 -> persentase = 1
@@ -36,7 +25,11 @@ class RecyclerNodeAdapter : RecyclerView.Adapter<RecyclerNodeAdapter.ViewHolder>
             }
 
 
-            val baterai = data?.get(2)?.trim()?.toFloat()
+            var baterai = data?.get(2)?.trim()?.toFloat()
+            if (baterai != null) {
+                if (baterai >= 100) baterai = 100F
+            }
+
             binding.tvBateraibar.text = "${baterai?.toInt()}%"
             binding.pbKapasitas.progress = persentase
             binding.tvProgress.text = "$persentase%"

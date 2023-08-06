@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMapOptions
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.hans.smartTB_admin.Model.DCRecyclerNode
@@ -33,11 +32,17 @@ class RecyclerJemput(private var listNode: MutableList<DCRecyclerNode>) : Recycl
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val context = holder.itemView.context
         val data = listNode[position]
-        holder.binding.emailNasabah.text = "Email: \n"+data.Email?.lowercase()
+        holder.binding.emailNasabah.isSelected = true
+        holder.binding.emailNasabah.text = "${data.Email?.lowercase()}"
         holder.binding.tvNodeID.text = "Node ID: " + data.NodeID
         holder.binding.tvBaterai.text = "Baterai: ${data.Baterai}%"
+        //seleksi kondisi biar ga null ygy
+        if(data.Alamat != "null")
+            holder.binding.alamatNasabah.text = "Alamat: \n"+data.Alamat
+        else holder.binding.alamatNasabah.text = "Alamat: "
+        Log.w("alamatRecycler", "alamat: ${data.Alamat}")
 
-        val Maxsampah = 60
+        val Maxsampah = 55
         val jarak = data.jarak?.toFloat()
         if (jarak != null && jarak <= Maxsampah)
         {
@@ -72,7 +77,10 @@ class RecyclerJemput(private var listNode: MutableList<DCRecyclerNode>) : Recycl
             }
         }else holder.binding.mapView.visibility = View.GONE
 
-        val baterai = data.Baterai?.toFloat()
+        var baterai = data.Baterai?.toFloat()
+        if (baterai != null) {
+            if (baterai > 100) baterai = 100f
+        }
         holder.binding.tvBaterai.text = "Baterai : ${baterai?.toInt()}%"
         holder.binding.tvBateraibar.text = "${baterai?.toInt()}%"
         updateIconBaterai(holder, baterai)
