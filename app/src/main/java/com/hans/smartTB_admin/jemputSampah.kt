@@ -64,6 +64,9 @@ class jemputSampah : AppCompatActivity() {
                             Log.w("alamat", "alamat berhasil didapatkan: $alamat")
                             listNode.add(DCRecyclerNode(Baterai, Email, Lattitude, Longitude, jarak, NodeID, alamat))
                             Log.w("alamatListnode", "alamat yang masuk recycler: $alamat")
+
+                            // Mengurutkan data pada listNode berdasarkan NodeID
+                            listNode.sortWith(compareBy { it.NodeID })
                             adapter.notifyDataSetChanged()
                         }.addOnFailureListener { Log.w("alamat", "gagal membaca data") }
                 }
