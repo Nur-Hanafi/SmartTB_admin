@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.app.PendingIntent.*
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -61,7 +62,7 @@ class MainActivity : AppCompatActivity() {
 
         //intent dari notifikasi
         val intent = Intent(this, MainActivity::class.java)
-        pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        pendingIntent = getActivity(this, 0, intent, FLAG_IMMUTABLE)
 
         //cek intent
         val bundle = intent.extras
